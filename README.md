@@ -1,50 +1,60 @@
-# NetCongestionPredictorAI
+# 🚦 NetCongestionPredictorAI
 
-# NetCongestionPredictorAI
+**NetCongestionPredictorAI** es un proyecto simple de aprendizaje automático para predecir congestión en redes usando estadísticas de tráfico y un modelo supervisado de clasificación.
 
-A simple machine learning project to predict **network congestion** using supervised learning and traffic statistics.
+---
 
-## 🚀 Project Overview
+## 🚀 Descripción del Proyecto
 
-This project trains a machine learning model to detect when a network is congested based on several features such as bandwidth usage, packet rates, latency, and jitter.
+Este proyecto entrena un modelo de **machine learning** que detecta cuándo una red está **congestionada**, en base a características como:
 
-The main goal is to demonstrate the application of AI in network systems — as a small, practical proof of concept.
+- Uso de ancho de banda
+- Tasa de paquetes
+- Latencia
+- Jitter (variación en latencia)
+
+También cuenta con una API implementada en **FastAPI**, que permite hacer predicciones en tiempo real mediante peticiones HTTP.
 
 ---
 
 ## 📊 Dataset
 
-The dataset was manually created as a small sample using network traffic statistics captured from **Wireshark**.
+El conjunto de datos fue creado manualmente, a partir de capturas de tráfico con Wireshark. Cada fila representa una muestra del estado de la red en un momento dado.
 
-Each row simulates a snapshot of network conditions, with the following features:
+### 🧾 Columnas del dataset:
+- `tiempo` — timestamp
+- `ancho_banda_usado` — ancho de banda (kbps)
+- `paquetes_usados` — total de paquetes
+- `paquetes_por_segundo` — tasa de paquetes
+- `latencia` — latencia (ms)
+- `jitter` — jitter (ms)
+- `congestion` — etiqueta binaria (1: congestión, 0: normal)
 
-- `tiempo` (time)
-- `ancho_banda_usado` (bandwidth used)
-- `paquetes_usados` (total packets)
-- `paquetes_por_segundo` (packets per second)
-- `latencia` (latency in ms)
-- `jitter` (variation in latency in ms)
-- `congestion` (1 if network is congested, 0 otherwise)
-
-The label `congestion` was manually derived based on a rule-based system. A record is marked as congested (`1`) if **two or more** of the following are true:
-
-- Bandwidth used > 700
-- Packets per second > 800
-- Latency > 200 ms
-- Jitter > 80 ms
+> La columna `congestion` se determinó por reglas: se marca como 1 si **2 o más** de estas condiciones se cumplen:
+- ancho_banda_usado > 700  
+- paquetes_por_segundo > 800  
+- latencia > 200 ms  
+- jitter > 80 ms
 
 ---
 
-## 🧠 Model
+## 🧠 Modelo
 
-The model used is a **Random Forest Classifier**, implemented using [`scikit-learn`](https://scikit-learn.org/):
+Se utilizó un **Random Forest Classifier** (`scikit-learn`):
 
-- It was trained on a subset of the data (80%)
-- The remaining 20% was used for evaluation
-- The model achieved good accuracy and balanced precision/recall
-- The trained model is saved as a `.pkl` file for later inference
+- Entrenado con el 80% del dataset
+- Evaluado con el 20% restante
+- Buen rendimiento (precisión y recall equilibrados)
+- Guardado como archivo `modelo_entrenado.pkl` para uso posterior
 
 ---
 
-## 📂 Project Structure
+## ⚙️ API REST (FastAPI)
 
+Se implementó una **API en FastAPI** para realizar predicciones en tiempo real.
+
+### 🚀 Cómo ejecutar la API
+
+1. Instala las dependencias:
+   ```bash
+   pip install -r requirements.txt
